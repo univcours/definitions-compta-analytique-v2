@@ -1,0 +1,996 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Livre des Définitions — Comptabilité Analytique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F1E6;
+    --paper-alt:#EFE7D6;
+    --ink:#241F1A;
+    --ink-soft:#5B5347;
+    --rule:#C9BCA1;
+    --rust:#A2472C;
+    --forest:#2F4F3A;
+    --gold:#9C7A3C;
+    --tab-w: 92px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Serif 4', serif;
+    line-height:1.55;
+    background-image:
+      linear-gradient(var(--paper) 0px, var(--paper) 100%),
+      repeating-linear-gradient(0deg, transparent, transparent 42px, rgba(36,31,26,0.035) 43px);
+  }
+
+  /* ===== Header / masthead ===== */
+  header{
+    border-bottom:3px double var(--ink);
+    padding:48px 6vw 28px;
+    position:relative;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--rust);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(32px, 5vw, 58px);
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:300;
+    color:var(--rust);
+  }
+  .subtitle{
+    font-size:17px;
+    color:var(--ink-soft);
+    max-width:640px;
+    margin:8px 0 0;
+  }
+  .meta-row{
+    margin-top:22px;
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    letter-spacing:.03em;
+  }
+  .meta-row span b{color:var(--ink);}
+
+  /* ===== Search / filter bar ===== */
+  .toolbar{
+    position:sticky; top:0; z-index:50;
+    background:var(--paper);
+    border-bottom:1px solid var(--rule);
+    padding:14px 6vw;
+    display:flex;
+    gap:16px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  #search{
+    flex:1;
+    min-width:220px;
+    background:transparent;
+    border:none;
+    border-bottom:2px solid var(--ink);
+    font-family:'Source Serif 4', serif;
+    font-size:18px;
+    font-style:italic;
+    padding:6px 2px;
+    color:var(--ink);
+    outline:none;
+  }
+  #search::placeholder{color:var(--ink-soft); opacity:.6;}
+  .count-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--forest);
+    white-space:nowrap;
+  }
+
+  /* ===== Layout ===== */
+  .wrap{
+    display:flex;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  nav.toc{
+    width:230px;
+    flex:none;
+    padding:38px 18px 60px 6vw;
+    position:sticky;
+    top:57px;
+    align-self:flex-start;
+    max-height:calc(100vh - 57px);
+    overflow-y:auto;
+  }
+  nav.toc h2{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  nav.toc a{
+    display:block;
+    font-size:13.5px;
+    color:var(--ink);
+    text-decoration:none;
+    padding:7px 0;
+    border-bottom:1px dotted var(--rule);
+    transition:color .15s;
+  }
+  nav.toc a:hover{color:var(--rust);}
+  nav.toc a .n{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--gold);
+    margin-right:8px;
+    font-size:11px;
+  }
+
+  main{
+    flex:1;
+    padding:38px 6vw 100px 34px;
+    min-width:0;
+  }
+
+  section.chapter{
+    margin-bottom:56px;
+    scroll-margin-top:75px;
+  }
+  .chapter-head{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:10px;
+    margin-bottom:26px;
+  }
+  .chapter-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--rust);
+    letter-spacing:.05em;
+  }
+  .chapter-head h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:26px;
+    margin:0;
+  }
+
+  /* ===== Definition entries (ledger rows) ===== */
+  .entry{
+    display:grid;
+    grid-template-columns: var(--tab-w) 1fr;
+    gap:18px;
+    padding:18px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  .entry:last-child{border-bottom:none;}
+  .tab{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    padding-top:3px;
+  }
+  .tab .code{
+    display:inline-block;
+    background:var(--paper-alt);
+    border:1px solid var(--rule);
+    color:var(--forest);
+    padding:2px 6px;
+    border-radius:2px;
+    font-weight:700;
+  }
+  .term{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:19px;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  .term .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:400;
+    font-size:10px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    border-radius:20px;
+    padding:2px 8px;
+    margin-left:10px;
+    vertical-align:middle;
+  }
+  .def{
+    font-size:15.5px;
+    color:var(--ink);
+    margin:0 0 8px;
+  }
+  .def b{color:var(--rust); font-weight:600;}
+  .formula{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13.5px;
+    background:var(--paper-alt);
+    border-left:3px solid var(--forest);
+    padding:9px 14px;
+    margin:8px 0 4px;
+    color:var(--forest);
+    display:inline-block;
+  }
+  .example{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    font-style:italic;
+    margin-top:6px;
+    padding-left:14px;
+    border-left:2px solid var(--rule);
+  }
+  .hidden{display:none !important;}
+  mark{
+    background:#F0D48A;
+    color:var(--ink);
+    padding:0 1px;
+    border-radius:2px;
+  }
+
+  .no-results{
+    display:none;
+    padding:60px 0;
+    text-align:center;
+    color:var(--ink-soft);
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:18px;
+  }
+
+  footer{
+    border-top:3px double var(--ink);
+    padding:26px 6vw 40px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:.04em;
+    text-align:center;
+  }
+
+  @media (max-width: 820px){
+    .wrap{flex-direction:column;}
+    nav.toc{
+      position:relative; top:0; width:auto;
+      padding:20px 6vw; max-height:none;
+      border-bottom:1px solid var(--rule);
+    }
+    main{padding:28px 6vw 80px;}
+    .entry{grid-template-columns:1fr; gap:6px;}
+    .tab{padding-top:0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Pr Youssef Rachid · Semestre 4 — Licence Économie · FEG de Settat · 2025/2026</p>
+  <h1>Le Grand Livre <em>des définitions</em></h1>
+  <p class="subtitle">Glossaire complet des notions et définitions du cours de Comptabilité Analytique — du concept fondateur de la CAE jusqu'au seuil de rentabilité.</p>
+  <div class="meta-row">
+    <span>Chapitres couverts : <b>0 — 7</b></span>
+    <span>Entrées : <b id="totalCount">0</b></span>
+    <span>Dernière compilation : <b>Juillet 2026</b></span>
+  </div>
+</header>
+
+<div class="toolbar">
+  <input id="search" type="text" placeholder="Rechercher une définition — ex. « CMUP », « rebuts », « seuil de rentabilité »…">
+  <span class="count-tag" id="resultCount"></span>
+</div>
+
+<div class="wrap">
+  <nav class="toc" id="toc">
+    <h2>Sommaire</h2>
+    <a href="#ch0"><span class="n">00</span>Caractéristiques de la CAE</a>
+    <a href="#ch1"><span class="n">01</span>Les charges de la CAE</a>
+    <a href="#ch2"><span class="n">02</span>Hiérarchie des coûts</a>
+    <a href="#ch3"><span class="n">03</span>Évaluation des stocks</a>
+    <a href="#ch4"><span class="n">04</span>Traitement des charges</a>
+    <a href="#ch5"><span class="n">05</span>Correctifs du coût</a>
+    <a href="#ch6"><span class="n">06</span>Imputation rationnelle</a>
+    <a href="#ch7"><span class="n">07</span>Coût variable & SR</a>
+  </nav>
+
+  <main id="main">
+
+    <!-- CHAPITRE 0 -->
+    <section class="chapter" id="ch0">
+      <div class="chapter-head">
+        <span class="chapter-num">CH. 00</span>
+        <h2>Caractéristiques de la comptabilité analytique</h2>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§0.01</span></div>
+        <div>
+          <p class="term">Comptabilité industrielle</p>
+          <p class="def">Ancêtre historique de la comptabilité analytique. La connaissance des coûts est, depuis le début de la révolution industrielle, un impératif de base de toute prise de décision. Des systèmes précurseurs sont recensés dès la fin du XVIII<sup>e</sup> siècle en Grande-Bretagne (forges et fonderies de la région de Sheffield).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§0.02</span></div>
+        <div>
+          <p class="term">Comptabilité analytique d'exploitation (CAE)</p>
+          <p class="def">Apparue lors de la <b>crise économique mondiale des années 30</b>. Elle est également désignée sous les termes de comptabilité de gestion, calcul des coûts ou analyse des coûts.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§0.03</span></div>
+        <div>
+          <p class="term">Comptabilité analytique <span class="tag">définition clé</span></p>
+          <p class="def">Outil de gestion interne qui consiste à quantifier les flux internes et à contrôler les consommations ainsi que leur destination, pour répondre à deux questions : <i>« Qui consomme quoi et combien ? »</i> et <i>« Qui produit quoi, combien et comment ? »</i>. Elle constitue un outil de base du contrôle de gestion.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§0.04</span></div>
+        <div>
+          <p class="term">Objectifs de la CAE</p>
+          <p class="def">Connaître les coûts des différentes fonctions de l'entreprise (approvisionnement, production, distribution) ; évaluer certains éléments du bilan (valeur des stocks) ; analyser les résultats en comparant coûts des produits et prix de vente.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 1 -->
+    <section class="chapter" id="ch1">
+      <div class="chapter-head">
+        <span class="chapter-num">CH. 01</span>
+        <h2>Les charges de la comptabilité analytique</h2>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.01</span></div>
+        <div>
+          <p class="term">Charges de la CAE <span class="tag">formule</span></p>
+          <div class="formula">Charges CAE = Charges CG − Charges non incorporables + Charges supplétives ± Charges calculées</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.02</span></div>
+        <div>
+          <p class="term">Charges non incorporables</p>
+          <p class="def">Charges à <b>éliminer</b> : charges sans rapport direct avec l'activité de l'entreprise (ex. assurance-vie du PDG), charges à caractère exceptionnel non courantes (VNA d'une immobilisation cédée, pénalités fiscales), amortissements des immobilisations en non-valeur, provisions pour dépréciation, charges d'une période antérieure, impôts sur le résultat.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.03</span></div>
+        <div>
+          <p class="term">Charges supplétives</p>
+          <p class="def">Charges à <b>créer</b> : elles ne figurent pas en comptabilité générale mais sont introduites en CAE pour permettre la comparaison entre entreprises concurrentes de formes juridiques ou de modes de financement différents. Deux types : la rémunération théorique du travail de l'exploitant et la rémunération théorique des capitaux propres.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.04</span></div>
+        <div>
+          <p class="term">Charges calculées</p>
+          <p class="def">Charges dont le montant en CG nécessite une <b>modification</b> pour être adapté à la finalité de la CAE. Elles regroupent les charges d'usage, les charges étalées et les charges abonnées.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.04a</span></div>
+        <div>
+          <p class="term">Charge d'usage</p>
+          <p class="def">Se substitue aux dotations aux amortissements de la comptabilité générale, en tenant compte d'une <b>valeur d'usage</b> et d'une <b>durée d'usage</b> plutôt que de la valeur d'origine comptable.</p>
+          <p class="example">Ex. Machine amortie en CG mais évaluée à 15 000 DH par le chef d'entreprise, remplacée après 2 ans d'usage → annuité CAE = 15 000 / 2 = 7 500 DH.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.04b</span></div>
+        <div>
+          <p class="term">Charge étalée</p>
+          <p class="def">Se substitue aux dotations aux provisions de la comptabilité générale. La CAE ne retient en dotations que les provisions <b>pour risques et charges</b>.</p>
+          <p class="example">Ex. Réparation future de 400 000 DH dans 4 ans → charge étalée annuelle CAE = 100 000 DH, quel que soit le montant provisionné en CG.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.04c</span></div>
+        <div>
+          <p class="term">Charge abonnée</p>
+          <p class="def">Charge calculée sur la base d'une période <b>plus précise ou différente</b> de celle constatée en comptabilité générale.</p>
+          <p class="example">Ex. Loyer annuel 8 800 DH sur 11 mois travaillés → charge mensuelle CAE = 8 800 / 11 = 800 DH.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.05</span></div>
+        <div>
+          <p class="term">Charge directe</p>
+          <p class="def">Charge qui peut être <b>affectée sans ambiguïté et sans calcul préalable</b> à un coût en particulier.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.06</span></div>
+        <div>
+          <p class="term">Charge indirecte</p>
+          <p class="def">Charge qui <b>nécessite un calcul préalable</b> (répartition entre centres d'analyse) avant d'être imputée aux coûts.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.07</span></div>
+        <div>
+          <p class="term">Charge fixe</p>
+          <p class="def">Charge <b>constante quel que soit le volume</b> de l'activité.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§1.08</span></div>
+        <div>
+          <p class="term">Charge variable</p>
+          <p class="def">Charge qui <b>varie en fonction du volume</b> de l'activité.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 2 -->
+    <section class="chapter" id="ch2">
+      <div class="chapter-head">
+        <span class="chapter-num">CH. 02</span>
+        <h2>La hiérarchie des coûts dans l'entreprise</h2>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§2.01</span></div>
+        <div>
+          <p class="term">Coût d'achat</p>
+          <p class="def">Coût composé du prix d'achat, des charges accessoires d'achat (transport, assurance, taxes douanières — facturées par des tiers) et des charges d'approvisionnement (réception, contrôle, manutention, fonctionnement du service).</p>
+          <div class="formula">Coût d'achat = Prix d'achat + Charges d'approv. directes + Charges d'approv. indirectes</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§2.02</span></div>
+        <div>
+          <p class="term">Inventaire permanent (IP)</p>
+          <p class="def">Enregistrement permanent des mouvements de stocks, permettant de connaître de façon constante les existants en quantité et en valeur.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§2.03</span></div>
+        <div>
+          <p class="term">CMUP <span class="tag">formule</span></p>
+          <p class="def">Coût Moyen Unitaire Pondéré : méthode d'évaluation des sorties de stock.</p>
+          <div class="formula">CMUP = (Solde initial en valeur + Entrées en valeur) / (SI en quantités + Entrées en quantité)</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§2.04</span></div>
+        <div>
+          <p class="term">Coût de revient</p>
+          <p class="def">Somme de toutes les charges supportées depuis l'achat de la marchandise (ou de la matière première et sa transformation) jusqu'à la vente.</p>
+          <div class="formula">Coût de revient = Coût d'achat/de production des unités vendues + Coût de distribution</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§2.05</span></div>
+        <div>
+          <p class="term">Coût de distribution</p>
+          <p class="def">Regroupe l'ensemble des charges relatives à la vente : étude de marché, préparation, exécution et promotion des ventes, et service après-vente.</p>
+          <div class="formula">Coût de distribution = Charges directes de distribution + Charges indirectes de distribution</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§2.06</span></div>
+        <div>
+          <p class="term">Résultat analytique</p>
+          <div class="formula">Résultat analytique = Chiffre d'affaires HT − Coût de revient des unités vendues</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§2.07</span></div>
+        <div>
+          <p class="term">Coût de production</p>
+          <p class="def">Ensemble des charges supportées pour l'obtention d'un produit ou d'un service. Il est calculé à la sortie des ateliers de fabrication.</p>
+          <div class="formula">Coût de production = Coût d'achat des MP consommées + Frais de production</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§2.08</span></div>
+        <div>
+          <p class="term">Frais de production</p>
+          <p class="def">Regroupe l'ensemble des charges relatives à la production : préparation, exécution, contrôle et essais.</p>
+          <div class="formula">Frais de production = Charges directes de production + Charges indirectes de production</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 3 -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head">
+        <span class="chapter-num">CH. 03</span>
+        <h2>Les méthodes d'évaluation des stocks</h2>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.01</span></div>
+        <div>
+          <p class="term">Stock <span class="tag">définition clé</span></p>
+          <p class="def">Ensemble de biens destinés soit à être vendus dans le cadre de l'activité courante de l'entreprise, soit à être consommés dans l'activité de production. Ensemble des marchandises ou articles accumulés qui alimentent le cycle d'exploitation dans l'attente d'une utilisation ultérieure.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.02</span></div>
+        <div>
+          <p class="term">Stocks de marchandises</p>
+          <p class="def">Biens achetés pour être revendus en l'état, sans modification par l'entreprise.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.03</span></div>
+        <div>
+          <p class="term">Stocks d'approvisionnements</p>
+          <p class="def">Matières premières servant à la création des produits finis, ainsi que les autres matières et fournitures consommables.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.04</span></div>
+        <div>
+          <p class="term">Stocks de produits</p>
+          <p class="def">Produits finis et produits intermédiaires — ces derniers étant arrivés à un stade où ils pourraient être vendus à part entière, mais qui vont entrer dans une nouvelle phase du cycle de production (ex. une roue de vélo).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.05</span></div>
+        <div>
+          <p class="term">En-cours de production</p>
+          <p class="def">Biens en cours de fabrication (cycle non achevé) ou services en cours d'élaboration (études et prestations en cours).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.06</span></div>
+        <div>
+          <p class="term">Inventaire permanent</p>
+          <p class="def">Organisation des comptes de stocks qui, par l'enregistrement des mouvements d'entrées et de sorties, permet de connaître de façon constante, en cours de période, les existants en quantités et en valeurs. Donne le <b>« stock théorique »</b>, à comparer périodiquement au stock réel (inventaire physique).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.07</span></div>
+        <div>
+          <p class="term">Inventaire intermittent</p>
+          <p class="def">Permet de connaître les stocks grâce à une opération de comptage physique périodique. La valeur des sorties est calculée par différence entre le stock initial augmenté des entrées et le stock final. Obligatoire au moins une fois par an, en fin d'exercice.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.08</span></div>
+        <div>
+          <p class="term">Différence d'inventaire</p>
+          <p class="def">Écart entre le stock théorique (issu de l'inventaire permanent) et le stock réel (issu de l'inventaire physique).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.09</span></div>
+        <div>
+          <p class="term">CMUP après chaque entrée</p>
+          <p class="def">Évalue les sorties au dernier coût moyen calculé après la dernière entrée. Le coût est déterminé après chaque entrée et sert de référence jusqu'à l'entrée suivante. <b>Avantage</b> : atténue les variations de coûts, valorisation au fur et à mesure. <b>Inconvénient</b> : valeur des stocks faussée en cas de variation définitive des coûts.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.10</span></div>
+        <div>
+          <p class="term">CMUP de fin de période</p>
+          <p class="def">Évalue les sorties au CMUP des entrées d'une période considérée (mois, trimestre, année, stock initial inclus). Les sorties ne sont connues qu'en quantité durant la période ; le CMUP n'est calculé qu'en fin de période. <b>Inconvénient</b> : retarde le calcul des coûts.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.11</span></div>
+        <div>
+          <p class="term">FIFO <span class="tag">First In, First Out</span></p>
+          <p class="def">Comptabilise les flux sortants dans l'ordre des entrées (épuisement des lots les plus anciens en premier). <b>Avantage</b> : stock valorisé au coût le plus récent. <b>Inconvénient</b> : valorisation des sorties toujours décalée par rapport à l'évolution des coûts.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§3.12</span></div>
+        <div>
+          <p class="term">LIFO <span class="tag">Last In, First Out</span></p>
+          <p class="def">Tient compte de la difficulté à vendre les vieux modèles, conservés mais consommés seulement après épuisement des entrées récentes. <b>Avantage</b> : coûts immédiatement influencés par la variation des prix, plus proches de la réalité du marché. <b>Inconvénient</b> : stock évalué à des coûts anciens peu significatifs.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 4 -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head">
+        <span class="chapter-num">CH. 04</span>
+        <h2>Traitement des charges de la CAE</h2>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.01</span></div>
+        <div>
+          <p class="term">Affectation des charges directes</p>
+          <p class="def">Se fait <b>sans calcul</b> : le montant de la charge qui concerne un coût en particulier lui est directement affecté.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.02</span></div>
+        <div>
+          <p class="term">Imputation des charges indirectes</p>
+          <p class="def">Les charges indirectes (administration, charges financières, énergie…) doivent être analysées pour être réparties entre les coûts, via la méthode des <b>centres d'analyse</b> ou sections analytiques.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.03</span></div>
+        <div>
+          <p class="term">Centre d'analyse <span class="tag">définition clé</span></p>
+          <p class="def">Subdivision d'une entreprise utilisée pour regrouper des coûts et des activités similaires ; outil de gestion permettant d'identifier et d'évaluer la performance de différentes parties de l'organisation. Sert à la répartition des coûts, l'évaluation de la performance, la prise de décision et le contrôle de gestion.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.04</span></div>
+        <div>
+          <p class="term">Centres principaux</p>
+          <p class="def">Centres dont les charges sont imputées aux coûts d'acquisition des matières, de production ou de distribution. Comprennent les centres d'<b>approvisionnement</b> (achat, stockage), de <b>production</b> (ateliers) et de <b>distribution</b> (relations clients).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.05</span></div>
+        <div>
+          <p class="term">Centres auxiliaires</p>
+          <p class="def">Centres au service des centres principaux (ressources humaines, entretien, force motrice, comptabilité). Leurs charges ne sont pas imputables directement aux coûts : elles sont réparties entre les centres principaux.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.06</span></div>
+        <div>
+          <p class="term">Centres de structure</p>
+          <p class="def">Réservés à la répartition des charges indépendantes des activités d'approvisionnement, production et distribution — essentiellement les charges administratives. Charges communes à toutes les fonctions, imputées aux coûts de revient.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.07</span></div>
+        <div>
+          <p class="term">Répartition primaire</p>
+          <p class="def">Répartition de toutes les charges indirectes entre les différents centres d'analyse (auxiliaires et principaux), en fonction de <b>clés de répartition</b> (souvent en pourcentages).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.08</span></div>
+        <div>
+          <p class="term">Répartition secondaire</p>
+          <p class="def">Répartition des coûts des centres auxiliaires (calculés après la répartition primaire) entre les centres principaux, du fait que ces derniers ne peuvent être imputés directement aux coûts.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.09</span></div>
+        <div>
+          <p class="term">Prestations réciproques</p>
+          <p class="def">Situation où certains centres auxiliaires fournissent des prestations à d'autres centres auxiliaires dont ils reçoivent eux-mêmes des prestations, nécessitant la résolution d'un système d'équations.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.10</span></div>
+        <div>
+          <p class="term">Unité d'œuvre (UO)</p>
+          <p class="def">Unité physique servant à mesurer l'activité d'un centre d'analyse, généralement exprimée en unité de temps (heure), à défaut en autre unité physique (kg, m²) ou, en dernier recours, en unité monétaire (<b>assiette de frais</b>).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§4.11</span></div>
+        <div>
+          <p class="term">Coût de l'unité d'œuvre / taux de frais</p>
+          <p class="def">Obtenu en rapportant le coût total du centre au nombre d'unités d'œuvre (ou à la valeur de l'assiette de frais) observé pendant la période.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 5 -->
+    <section class="chapter" id="ch5">
+      <div class="chapter-head">
+        <span class="chapter-num">CH. 05</span>
+        <h2>Éléments correctifs du coût de production</h2>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§5.01</span></div>
+        <div>
+          <p class="term">En-cours de production</p>
+          <p class="def">Produit commencé au cours d'une période et achevé au cours de la période suivante. Partie de la production encore inachevée — ni livrable, ni stockable en l'état, ni utilisable comme produit intermédiaire.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§5.02</span></div>
+        <div>
+          <p class="term">Méthode du cumul des charges</p>
+          <p class="def">Le coût des en-cours en fin de période égale le montant des charges engagées : coût de la matière consommée + coût de main-d'œuvre directe + autres charges de production (directes et indirectes).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§5.03</span></div>
+        <div>
+          <p class="term">Méthode des coûts préétablis</p>
+          <p class="def">Utilisée lorsqu'une évaluation précise de chaque élément de charge est impossible : évaluation globale forfaitaire, exprimée en termes d'équivalence par rapport à des produits finis, selon l'état d'avancement de la production.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§5.04</span></div>
+        <div>
+          <p class="term">Coût de production (avec en-cours) <span class="tag">formule</span></p>
+          <div class="formula">Coût de production = Charges de production + En-cours initial − En-cours final</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§5.05</span></div>
+        <div>
+          <p class="term">Déchets</p>
+          <p class="def">Tout résidu résultant d'un processus d'extraction, exploitation, transformation, production, consommation, utilisation, contrôle ou filtration : résidus de matière première (chutes de tissus, sciures, tourteaux…).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§5.06</span></div>
+        <div>
+          <p class="term">Rebuts</p>
+          <p class="def">Produits finis (ou semi-finis) défectueux qui ne répondent pas aux standards prédéterminés (pièces cassées, dimensions non conformes…), résultant de dysfonctionnements dans le processus de production. Impropres à une vente normale, mais peuvent être vendus avec rabais.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§5.07</span></div>
+        <div>
+          <p class="term">Produit résiduel utilisable</p>
+          <p class="def">Réutilisable dans la fabrication ou vendable à l'extérieur, valorisé au prix de marché ou à un prix forfaitaire. Sa valeur est déduite du coût du produit dont il provient et ajoutée à celui de la fabrication où il est réutilisé.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§5.08</span></div>
+        <div>
+          <p class="term">Produit résiduel vendable <span class="tag">formule</span></p>
+          <p class="def">Produit résiduel qui a un marché et peut être revendu en l'état, sans traitement préalable.</p>
+          <div class="formula">Valeur = Valeur vénale − Frais de distribution (− Frais de traitement si nécessaire)</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§5.09</span></div>
+        <div>
+          <p class="term">Produit résiduel sans valeur</p>
+          <p class="def">Ne peut être ni vendu ni utilisé ; destiné à être évacué. Son évacuation peut entraîner des frais (transport, nettoyage), lesquels sont ajoutés au coût de production du produit dont la fabrication a donné lieu à ces résidus.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§5.10</span></div>
+        <div>
+          <p class="term">Sous-produits</p>
+          <p class="def">Se distinguent des déchets par leur importance : une exploitation pourrait avoir leur fabrication comme objectif, et leur transformation est parfois nécessaire. Évalués soit forfaitairement à partir du prix de vente (déduction d'un bénéfice et de charges de distribution estimés), soit par partage de l'ensemble des charges de production.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 6 -->
+    <section class="chapter" id="ch6">
+      <div class="chapter-head">
+        <span class="chapter-num">CH. 06</span>
+        <h2>L'imputation rationnelle</h2>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§6.01</span></div>
+        <div>
+          <p class="term">Imputation rationnelle <span class="tag">définition clé</span></p>
+          <p class="def">Méthode qui cherche, en cas de saisonnalité de l'activité ou d'importantes charges de structure, à <b>éliminer l'influence des charges fixes</b> sur le coût de revient, afin de stabiliser les coûts comme indicateurs de gestion. Distingue les charges des facteurs réellement utilisés (imputées aux coûts) et les charges correspondant à la fraction inutilisée du potentiel de production (isolées en coût de sous-activité).</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§6.02</span></div>
+        <div>
+          <p class="term">Coefficient d'imputation rationnelle (CIR) <span class="tag">formule</span></p>
+          <p class="def">Coefficient d'activité par lequel sont multipliées les charges fixes pour l'imputation.</p>
+          <div class="formula">Coefficient d'activité = Activité réelle / Activité normale</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§6.03</span></div>
+        <div>
+          <p class="term">Coût d'imputation rationnelle <span class="tag">formule</span></p>
+          <p class="def">Comprend la totalité des charges variables, à laquelle s'ajoute une fraction des charges fixes nécessaires à la production normale.</p>
+          <div class="formula">Coût d'imputation rationnelle = Charges variables + (Charges fixes × CIR)</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§6.04</span></div>
+        <div>
+          <p class="term">Boni de suractivité / Coût de chômage</p>
+          <p class="def">Le taux d'activité traduit trois situations : <b>Taux &gt; 1</b> → boni de suractivité ; <b>Taux &lt; 1</b> → coût de chômage (sous-activité) ; <b>Taux = 1</b> → activité normale.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPITRE 7 -->
+    <section class="chapter" id="ch7">
+      <div class="chapter-head">
+        <span class="chapter-num">CH. 07</span>
+        <h2>La méthode du coût variable et seuil de rentabilité</h2>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§7.01</span></div>
+        <div>
+          <p class="term">Méthode des coûts variables <span class="tag">définition clé</span></p>
+          <p class="def">Le coût variable ne comprend que des charges opérationnelles, variables selon le niveau d'activité, affectées à chaque produit ou activité. Les charges fixes ne sont pas réparties mais traitées globalement. Permet de faire apparaître une <b>marge sur coût variable</b> par produit ou activité.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§7.02</span></div>
+        <div>
+          <p class="term">Marge sur coût variable (M/CV)</p>
+          <p class="def">Différence entre le chiffre d'affaires réalisé et le coût variable correspondant. Indicateur de gestion mesurant la performance d'un produit ou d'une activité, sa rentabilité, et sa contribution à la couverture des charges fixes.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§7.03</span></div>
+        <div>
+          <p class="term">Seuil de rentabilité (SR) <span class="tag">formule</span></p>
+          <p class="def">Chiffre d'affaires minimum que doit réaliser une entreprise pour couvrir la totalité de ses charges (variables + fixes). Pour ce chiffre d'affaires, le résultat est nul (ni bénéfice, ni perte). Appelé aussi <b>chiffre d'affaires critique</b>.</p>
+          <div class="formula">SR = Charges fixes / Taux de la marge sur coût variable</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§7.04</span></div>
+        <div>
+          <p class="term">Point mort <span class="tag">formule</span></p>
+          <p class="def">Date à laquelle le seuil de rentabilité a été atteint (réalisation) ou sera atteint (prévision). L'activité est considérée comme régulièrement répartie sur les 12 mois de l'année (ou 360 jours).</p>
+          <div class="formula">Délai = (Seuil de rentabilité / Chiffre d'affaires annuel) × 360 jours (ou 12 mois)</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="tab"><span class="code">§7.05</span></div>
+        <div>
+          <p class="term">Marge de sécurité (MS) <span class="tag">formule</span></p>
+          <p class="def">Lorsque le chiffre d'affaires dépasse le seuil de rentabilité, c'est la partie du chiffre d'affaires excédant ce seuil.</p>
+          <div class="formula">MS = Chiffre d'affaires − Seuil de rentabilité</div>
+        </div>
+      </div>
+    </section>
+
+    <p class="no-results" id="noResults">Aucune définition ne correspond à votre recherche.</p>
+
+  </main>
+</div>
+
+<footer>
+  Glossaire compilé à partir du support de cours « Comptabilité Analytique — Semestre 4, Licence Économie » · Pr Youssef Rachid · FEG de Settat
+</footer>
+
+<script>
+  const search = document.getElementById('search');
+  const entries = Array.from(document.querySelectorAll('.entry'));
+  const chapters = Array.from(document.querySelectorAll('section.chapter'));
+  const noResults = document.getElementById('noResults');
+  const resultCount = document.getElementById('resultCount');
+  const totalCount = document.getElementById('totalCount');
+
+  totalCount.textContent = entries.length;
+  resultCount.textContent = entries.length + ' entrées';
+
+  function stripMarks(el){
+    el.querySelectorAll('mark').forEach(m=>{
+      m.replaceWith(document.createTextNode(m.textContent));
+    });
+  }
+
+  function highlight(el, q){
+    if(!q) return;
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+    const nodes = [];
+    let n;
+    while(n = walker.nextNode()) nodes.push(n);
+    const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'ig');
+    nodes.forEach(node=>{
+      if(!node.textContent.trim()) return;
+      if(re.test(node.textContent)){
+        const span = document.createElement('span');
+        span.innerHTML = node.textContent.replace(re, '<mark>$1</mark>');
+        node.replaceWith(span);
+      }
+    });
+  }
+
+  function filter(){
+    const q = search.value.trim().toLowerCase();
+    let visible = 0;
+
+    entries.forEach(entry=>{
+      stripMarks(entry);
+      const text = entry.textContent.toLowerCase();
+      const match = !q || text.includes(q);
+      entry.classList.toggle('hidden', !match);
+      if(match){
+        visible++;
+        if(q) highlight(entry, search.value.trim());
+      }
+    });
+
+    chapters.forEach(ch=>{
+      const anyVisible = Array.from(ch.querySelectorAll('.entry')).some(e=>!e.classList.contains('hidden'));
+      ch.classList.toggle('hidden', !anyVisible);
+    });
+
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+    resultCount.textContent = q ? (visible + ' résultat' + (visible>1?'s':'')) : (entries.length + ' entrées');
+  }
+
+  search.addEventListener('input', filter);
+</script>
+
+</body>
+</html>
